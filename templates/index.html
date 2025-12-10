@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squozl - Short Squeeze Stock Scanner</title>
+    <meta name="description" content="Squozl finds stocks ready to squeeze. Real-time short interest scanner with AI-powered squeeze detection.">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google AdSense - Replace with your AdSense code -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🚀</span>
+                    <h1>Squozl</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" id="ticker-search" placeholder="Add ticker (e.g., TSLA)">
+                        <button id="add-ticker-btn">Add</button>
+                    </div>
+                    <button id="refresh-btn" class="btn-refresh">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 4v6h-6M1 20v-6h6"/>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+            <p class="subtitle">Find stocks ready to squeeze • Real-time scanner</p>
+        </div>
+    </header>
+
+    <!-- Top Banner Ad (728x90 Leaderboard) -->
+    <div class="ad-container ad-top">
+        <div class="ad-slot ad-leaderboard" id="ad-top">
+            <!-- Google AdSense Ad Unit - Top Banner -->
+            <!-- Replace this with your AdSense code:
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:728px;height:90px"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            -->
+            <span class="ad-placeholder">Advertisement</span>
+        </div>
+    </div>
+
+    <main class="container">
+        <section class="stats-bar">
+            <div class="stat-card">
+                <span class="stat-label">Candidates Found</span>
+                <span class="stat-value" id="total-candidates">--</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">High Alert</span>
+                <span class="stat-value alert" id="high-alert">--</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Last Updated</span>
+                <span class="stat-value" id="last-updated">--</span>
+            </div>
+        </section>
+
+        <!-- Inline Ad (Responsive) -->
+        <div class="ad-container ad-inline">
+            <div class="ad-slot ad-responsive" id="ad-inline-1">
+                <!-- Google AdSense Ad Unit - Inline Responsive -->
+                <!-- Replace this with your AdSense code:
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                -->
+                <span class="ad-placeholder">Sponsored Content</span>
+            </div>
+        </div>
+
+        <section class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="high">High Score (70+)</button>
+            <button class="filter-btn" data-filter="medium">Medium (40-69)</button>
+            <button class="filter-btn" data-filter="rising">Rising Volume</button>
+        </section>
+
+        <section class="candidates-grid" id="candidates-grid">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Scanning markets for squeeze candidates...</p>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal" id="detail-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-header">
+                <h2 id="modal-ticker">GME</h2>
+                <span class="modal-name" id="modal-name">GameStop Corp</span>
+            </div>
+            <div class="modal-body">
+                <div class="score-display">
+                    <div class="score-circle" id="modal-score-circle">
+                        <span id="modal-score">85</span>
+                    </div>
+                    <span class="score-label">Squeeze Score</span>
+                </div>
+                
+                <div class="metrics-grid" id="modal-metrics">
+                    <!-- Filled by JS -->
+                </div>
+                
+                <div class="thesis-section">
+                    <h3>Investment Thesis</h3>
+                    <p id="modal-thesis">Loading...</p>
+                </div>
+                
+                <div class="disclaimer">
+                    This is not financial advice. Short squeezes are highly volatile and risky.
+                    Do your own research before making investment decisions.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Ad (728x90 or Responsive) -->
+    <div class="ad-container ad-bottom">
+        <div class="ad-slot ad-leaderboard" id="ad-bottom">
+            <!-- Google AdSense Ad Unit - Bottom Banner -->
+            <!-- Replace this with your AdSense code:
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            -->
+            <span class="ad-placeholder">Advertisement</span>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Data sourced from Yahoo Finance / Finnhub. Updated every 30 minutes.</p>
+            <p class="disclaimer-text">For educational purposes only. Not financial advice.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
+
