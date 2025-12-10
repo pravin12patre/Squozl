@@ -748,7 +748,7 @@ def smart_fetch_stock(ticker: str) -> dict:
                     print(f"[Smart] Got & cached short interest for {ticker}: {si_data['short_percent_float']}%")
             
             # Try FMP if Yahoo didn't work
-            if not data.get('short_percent_float') and FMP_API_KEY != 'demo':
+            if not data.get('short_percent_float') and FMP_API_KEY:
                 if not rate_limiter.is_in_cooldown('fmp'):
                     print(f"[Smart] Getting short interest for {ticker} from FMP...")
                     si_data = fetch_from_fmp(ticker)
@@ -987,7 +987,8 @@ def start_scheduler():
     scheduler.start()
 
 
-if __name__ == '__main__':
+def initialize_app():
+    """Initialize caches and background tasks"""
     # Load all caches at startup
     load_short_interest_cache()
     load_stock_data_cache()
@@ -1005,15 +1006,25 @@ if __name__ == '__main__':
     threading.Thread(target=refresh_data, daemon=True).start()
     
     print("\n" + "="*60)
-    print("SMART SHORT SQUEEZE FINDER")
+    print("SQUOZL - Short Squeeze Scanner")
     print("="*60)
     print("\nIntelligent multi-source data fetching with rate limit management")
     print("\nConfigured Sources:")
-    print(f"  - Finnhub: {'Configured' if FINNHUB_API_KEY != 'demo' else 'Not configured'}")
-    print(f"  - FMP: {'Configured' if FMP_API_KEY != 'demo' else 'Not configured'}")
+    print(f"  - Finnhub: {'Configured' if FINNHUB_API_KEY else 'Not configured (set FINNHUB_API_KEY)'}")
+    print(f"  - FMP: {'Configured' if FMP_API_KEY else 'Not configured (set FMP_API_KEY)'}")
     print(f"  - Yahoo: Always available (rate limited)")
-    print("\nServer: http://127.0.0.1:5001")
-    print("API Status: http://127.0.0.1:5001/api/status")
     print("="*60 + "\n")
+
+
+# Initialize when module is loaded (for gunicorn)
+initialize_app()
+
+
+if __name__ == '__main__':
+    # Get port from environment (Render sets this)
+    port = int(os.environ.get('PORT', 5001))
     
-    app.run(debug=True, port=5001, use_reloader=False)
+    print(f"\nServer: http://127.0.0.1:{port}")
+    print(f"API Status: http://127.0.0.1:{port}/api/status\n")
+    
+    app.run(debug=True, host='0.0.0.0', port=port, use_reloader=False)
