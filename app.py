@@ -1,9 +1,14 @@
 """
-Short Squeeze Finder - Backend API
+Squozl - Short Squeeze Stock Scanner
 Smart multi-source data fetching with intelligent rate limit management
 """
 
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 import json
 from flask import Flask, jsonify, render_template
 from flask_cors import CORS
@@ -19,9 +24,12 @@ import requests
 app = Flask(__name__, static_folder='static', template_folder='templates')
 CORS(app)
 
-# API Keys
-FINNHUB_API_KEY = os.environ.get('FINNHUB_API_KEY', 'd4sq1c9r01qnb2sfb0tgd4sq1c9r01qnb2sfb0u0')
-FMP_API_KEY = os.environ.get('FMP_API_KEY', 'YgihXqC8qr1xP5UMt4BrO6BWtV8JlI9f')
+# API Keys - Set these as environment variables for security
+# Get free keys at:
+#   Finnhub: https://finnhub.io (60 calls/min)
+#   FMP: https://financialmodelingprep.com (250 calls/day)
+FINNHUB_API_KEY = os.environ.get('FINNHUB_API_KEY', '')
+FMP_API_KEY = os.environ.get('FMP_API_KEY', '')
 
 # Cache files
 CACHE_FILE = 'stock_cache.json'

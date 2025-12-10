@@ -42,16 +42,23 @@ Open http://127.0.0.1:5001
 
 ## Configuration
 
-Add your API keys in `app.py`:
+Set your API keys as environment variables:
 
-```python
-FINNHUB_API_KEY = 'your_finnhub_key'
-FMP_API_KEY = 'your_fmp_key'
+```bash
+# Option 1: Export in terminal
+export FINNHUB_API_KEY=your_finnhub_key
+export FMP_API_KEY=your_fmp_key
+
+# Option 2: Create .env file (copy from env.example)
+cp env.example .env
+# Edit .env with your keys
 ```
 
 Get free API keys:
-- Finnhub: https://finnhub.io (60 calls/min)
-- FMP: https://financialmodelingprep.com (250 calls/day)
+- **Finnhub**: https://finnhub.io (60 calls/min)
+- **FMP**: https://financialmodelingprep.com (250 calls/day)
+
+The app will work without API keys using cached/sample data, but real-time data requires valid keys.
 
 ## API Endpoints
 
