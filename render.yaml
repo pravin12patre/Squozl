@@ -8,9 +8,8 @@ services:
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.10.0
+        value: 3.11.4
       - key: FINNHUB_API_KEY
         sync: false
       - key: FMP_API_KEY
         sync: false
-
